@@ -18,7 +18,7 @@ http.interceptors.request.use(
 http.interceptors.response.use(
     response => {
         console.log("普通响应拦截")
-        if (response.data.code == 1001) {
+        if (response.data.code != 200) {
             ElMessage.warning(response.data.msg + ":" + response.data.cause)
             return false
         } else {

@@ -8,6 +8,9 @@ api.login = (dto) => {
 api.logout = () => {
     return http.post("/authorize/sign/logout")
 }
+api.register = (dto) => {
+    return http.post("/authorize/sign/register",dto)
+}
 api.isLogin = () => {
     return http.get("/authorize/information/isLogin")
 }
