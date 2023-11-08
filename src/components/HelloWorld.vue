@@ -1,7 +1,9 @@
 <script setup>
 import {inject, onMounted, ref} from 'vue'
+import {useStore} from "vuex";
 
 const api = inject('$api')
+
 const isLogin = ref({})
 
 onMounted(() => {
