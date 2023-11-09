@@ -1,21 +1,37 @@
 <script setup>
 import {useRouter} from "vue-router";
+import {inject, ref} from "vue";
+import {ElMessage} from "element-plus";
 
+const api = inject("$api")
 const router = useRouter()
+
+const logoutDialogVisible = ref(false)
+
+const logout = () => {
+  api.logout()
+      .then(r => {
+        if (r) {
+          ElMessage.info(r.data.msg + '...');
+          router.push("/authorize/login")
+        }
+      })
+}
 </script>
 
 <template>
   <el-container>
     <el-header>
-      <el-menu mode="horizontal">
+      <el-menu mode="horizontal" :ellipsis="false">
         <h1>StaffSync人事管理系统</h1>
+        <div class="flex-grow"/>
+        <el-menu-item @click="logoutDialogVisible = true">登出</el-menu-item>
       </el-menu>
+
     </el-header>
     <el-container>
       <el-aside>
-        <el-menu
-            default-active="/index"
-            router>
+        <el-menu default-active="/index" router>
           <el-sub-menu>
             <template #title>
               <span>系统管理</span>
@@ -24,26 +40,30 @@ const router = useRouter()
             <el-menu-item index="system-roleConfig">角色信息配置</el-menu-item>
             <el-menu-item index="system-permissionConfig">权限信息配置</el-menu-item>
           </el-sub-menu>
-
-          <el-sub-menu index="2">
-            <template #title>
-              权限管理
-            </template>
-            <el-menu-item-group title="Group One">
-              <el-menu-item index="1-1">用户角色配置</el-menu-item>
-              <el-menu-item index="1-2">角色和权限组配置</el-menu-item>
-            </el-menu-item-group>
-          </el-sub-menu>
         </el-menu>
       </el-aside>
+
       <el-main>
         <router-view/>
       </el-main>
     </el-container>
+
     <el-footer height="30px">
       weiyin.online copyright &copy; 2023
     </el-footer>
+
   </el-container>
+
+  <el-dialog v-model="logoutDialogVisible" width="300px">
+    <template #title>
+      <h3>登出</h3>
+    </template>
+    确认登出？
+    <template #footer>
+      <el-button type="success" @click="logout()" plain>确定</el-button>
+      <el-button type="danger" @click="logoutDialogVisible = false" plain>取消</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>
@@ -55,5 +75,9 @@ const router = useRouter()
   text-align: center;
   font-size: 15px;
   color: darkgray;
+}
+
+.flex-grow {
+  flex-grow: 1;
 }
 </style>

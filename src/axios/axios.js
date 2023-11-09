@@ -27,7 +27,8 @@ http.interceptors.response.use(
     },
     error => {
         console.log("异常响应拦截")
-        return error
+        ElMessage.warning(error.response.data.msg + ":" + error.response.data.cause)
+        return false
     })
 
 export default http

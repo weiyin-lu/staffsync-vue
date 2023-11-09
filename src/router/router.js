@@ -22,7 +22,12 @@ const routes = [
     {
         path: '/index',
         component: () => import('/src/view/Index.vue'),
+        redirect: '/index/default',
         children: [
+            {
+                path: 'default',
+                component: () => import('/src/components/Information.vue')
+            },
             {
                 path: 'system-deptConfig',
                 component: () => import('/src/components/system/DeptConfig.vue')

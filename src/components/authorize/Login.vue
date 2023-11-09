@@ -2,10 +2,12 @@
 
 import {inject, ref} from "vue";
 import {useStore} from "vuex";
+import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 
 const api = inject("$api")
 const store = useStore()
+const router = useRouter()
 
 const loginData = ref({
   username: null,
@@ -18,6 +20,7 @@ const login = () => {
         if (r) {
           store.dispatch("loginAction", r.data.data)
           ElMessage.success(r.data.msg)
+          router.push("/index")
         }
       })
 }
