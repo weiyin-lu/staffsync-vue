@@ -70,7 +70,7 @@ const logout = () => {
 
 <style scoped>
 .el-container {
-  min-height: 85vh;
+  min-height: 92vh;
 }
 
 .el-footer {
@@ -86,6 +86,7 @@ const logout = () => {
   background-color: #1772b4;
 }
 .el-aside {
+  height: 91vh;
   background-color: #1772c5;
 }
 </style>
