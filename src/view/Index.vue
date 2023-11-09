@@ -24,7 +24,7 @@ const logout = () => {
     <el-header>
       <el-menu mode="horizontal" :ellipsis="false" background-color="#1772b4" text-color="white"
                active-text-color="white" router>
-        <el-menu-item index="/index/default">StaffSync人事管理系统</el-menu-item>
+        <el-menu-item index="/index/default"><h1>StaffSync人事管理系统</h1></el-menu-item>
         <div class="flex-grow"/>
         <el-menu-item @click="logoutDialogVisible = true">登出</el-menu-item>
       </el-menu>
@@ -32,7 +32,8 @@ const logout = () => {
     </el-header>
     <el-container>
       <el-aside>
-        <el-menu default-active="/index" router>
+        <el-menu default-active="/index" background-color="#1772c5" text-color="#FFFFFF"
+                 active-text-color="#AAAAFF" router>
           <el-sub-menu>
             <template #title>
               <span>系统管理</span>
@@ -80,5 +81,11 @@ const logout = () => {
 
 .flex-grow {
   flex-grow: 1;
+}
+.el-header {
+  background-color: #1772b4;
+}
+.el-aside {
+  background-color: #1772c5;
 }
 </style>
