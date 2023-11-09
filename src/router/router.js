@@ -7,7 +7,6 @@ const routes = [
     },
     {
         path: '/authorize',
-        redirect: '/authorize',
         component: () => import('/src/view/Authorize.vue'),
         children: [
             {
@@ -17,6 +16,24 @@ const routes = [
             {
                 path: 'register',
                 component: () => import('/src/components/authorize/Register.vue')
+            },
+        ]
+    },
+    {
+        path: '/index',
+        component: () => import('/src/view/Index.vue'),
+        children: [
+            {
+                path: 'system-deptConfig',
+                component: () => import('/src/components/system/DeptConfig.vue')
+            },
+            {
+                path: 'system-roleConfig',
+                component: () => import('/src/components/system/RoleConfig.vue')
+            },
+            {
+                path: 'system-permissionConfig',
+                component: () => import('/src/components/system/PermissionConfig.vue')
             },
         ]
     },
