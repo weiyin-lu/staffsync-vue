@@ -19,7 +19,7 @@ http.interceptors.response.use(
     response => {
         console.log("普通响应拦截")
         if (response.data.code != 200) {
-            ElMessage.warning(response.data.msg + ":" + response.data.cause)
+            ElMessage.error(response.data.msg + ":" + response.data.cause)
             return false
         } else {
             return response
@@ -27,7 +27,9 @@ http.interceptors.response.use(
     },
     error => {
         console.log("异常响应拦截")
-        ElMessage.warning(error.response.data.msg + ":" + error.response.data.cause)
+        if (error.response.data.code != 200) {
+            ElMessage.error(error.response.data.msg + ":" + error.response.data.cause)
+        }
         return false
     })
 

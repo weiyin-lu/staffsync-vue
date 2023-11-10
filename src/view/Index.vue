@@ -13,7 +13,7 @@ const logout = () => {
       .then(r => {
         if (r) {
           ElMessage.info(r.data.msg + '...');
-          router.push("/authorize/login")
+          router.push("/sign/login")
         }
       })
 }
@@ -36,7 +36,7 @@ const logout = () => {
                  active-text-color="#AAAAFF" router>
           <el-sub-menu>
             <template #title>
-              <span>系统管理</span>
+              <span>系统配置管理</span>
             </template>
             <el-menu-item index="system-deptConfig">部门信息配置</el-menu-item>
             <el-menu-item index="system-roleConfig">角色信息配置</el-menu-item>
@@ -78,7 +78,6 @@ const logout = () => {
   font-size: 15px;
   color: darkgray;
 }
-
 .flex-grow {
   flex-grow: 1;
 }

@@ -3,19 +3,19 @@ import {createRouter, createWebHistory} from "vue-router";
 const routes = [
     {
         path: '/',
-        redirect: '/authorize/login'
+        redirect: '/sign/login'
     },
     {
-        path: '/authorize',
+        path: '/sign',
         component: () => import('/src/view/Authorize.vue'),
         children: [
             {
                 path: 'login',
-                component: () => import('/src/components/authorize/Login.vue')
+                component: () => import('/src/components/sign/Login.vue')
             },
             {
                 path: 'register',
-                component: () => import('/src/components/authorize/Register.vue')
+                component: () => import('/src/components/sign/Register.vue')
             },
         ]
     },

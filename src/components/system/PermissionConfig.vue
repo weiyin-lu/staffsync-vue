@@ -29,11 +29,22 @@ onMounted(() => {
 
 <template>
   <h1>权限信息配置</h1>
-  <div style="padding: 10px 0px 10px"><el-tag>查询条件</el-tag></div>
-    <el-input style="width: 300px" placeholder="权限编码..."/>
-    <el-input style="width: 300px" placeholder="权限含义..."/>
-    <el-button type="primary" plain>查询</el-button>
-  <div style="padding: 10px 0px 10px"><el-tag>数据列表</el-tag></div>
+  <div style="padding: 10px 0px 10px">
+    <el-tag>检索/操作</el-tag>
+  </div>
+  <el-row gutter="10">
+    <el-col :span="20">
+      <el-input style="width: 300px" placeholder="权限标签..."/>
+      <el-input style="width: 300px" placeholder="权限名称..."/>
+      <el-button type="primary" plain>查询</el-button>
+    </el-col>
+    <el-col :span="4">
+      <el-button type="success" plain>添加角色</el-button>
+    </el-col>
+  </el-row>
+  <div style="padding: 10px 0px 10px">
+    <el-tag>数据列表</el-tag>
+  </div>
   <el-table :data="basicPermissionList.records" stripe height="500">
     <el-table-column type="index" label="序号" width="100"/>
     <el-table-column prop="permissionId" label="权限编码"/>

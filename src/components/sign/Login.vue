@@ -3,7 +3,7 @@
 import {inject, ref} from "vue";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
-import {ElMessage} from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
 
 const api = inject("$api")
 const store = useStore()
@@ -15,10 +15,17 @@ const loginData = ref({
 })
 
 const login = () => {
+  // 加载条
+  const loading = ElLoading.service({
+    lock: true,
+    text: '登录中...',
+  })
   api.login(loginData.value)
       .then(r => {
         if (r) {
           store.dispatch("loginAction", r.data.data)
+          // 关闭加载条
+          loading.close()
           ElMessage.success(r.data.msg)
           router.push("/index")
         }
