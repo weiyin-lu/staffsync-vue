@@ -1,8 +1,9 @@
 <script setup>
 import {inject, onMounted, ref} from "vue";
-
+// 全局函数
 const api = inject("$api")
 
+// 数据列表：权限信息
 const basicPermissionList = ref({
   pageNumber: null,
   pageSize: null,
@@ -10,16 +11,18 @@ const basicPermissionList = ref({
   totalPage: null,
   totalRow: null
 })
+// 标识：当前页码
 const currentPage = ref(1)
-
+// 函数：翻页
 const changePage = () => {
   api.getPermissionListByPage(currentPage.value)
       .then(r => {
         basicPermissionList.value = r.data.data
       })
 }
-
+// 初始化
 onMounted(() => {
+  // 获取权限信息数据列表第一页
   api.getPermissionListByPage(1)
       .then(r => {
         basicPermissionList.value = r.data.data

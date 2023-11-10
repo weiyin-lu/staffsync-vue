@@ -1,30 +1,31 @@
 <script setup>
-
 import {inject, ref} from "vue";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
 import {ElLoading, ElMessage} from "element-plus";
-
+// 全局函数
 const api = inject("$api")
 const store = useStore()
 const router = useRouter()
-
+// 请求携带数据：登录信息
 const loginData = ref({
   username: null,
   password: null
 })
-
+// 函数：登录
 const login = () => {
-  // 加载条
+  // loading条
   const loading = ElLoading.service({
     lock: true,
     text: '登录中...',
   })
+  // 登录请求
   api.login(loginData.value)
       .then(r => {
         if (r) {
+          // 登录信息维护到vuex
           store.dispatch("loginAction", r.data.data)
-          // 关闭加载条
+          // 关闭loading
           loading.close()
           ElMessage.success(r.data.msg)
           router.push("/index")

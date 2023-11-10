@@ -2,12 +2,12 @@
 import {useRouter} from "vue-router";
 import {inject, ref} from "vue";
 import {ElMessage} from "element-plus";
-
+// 全局函数
 const api = inject("$api")
 const router = useRouter()
-
+// 标识：注销对话框
 const logoutDialogVisible = ref(false)
-
+// 函数：账号注销
 const logout = () => {
   api.logout()
       .then(r => {
@@ -26,7 +26,7 @@ const logout = () => {
                active-text-color="white" router>
         <el-menu-item index="/index/default"><h1>StaffSync人事管理系统</h1></el-menu-item>
         <div class="flex-grow"/>
-        <el-menu-item @click="logoutDialogVisible = true">登出</el-menu-item>
+        <el-menu-item @click="logoutDialogVisible = true">注销</el-menu-item>
       </el-menu>
 
     </el-header>

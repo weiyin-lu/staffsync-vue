@@ -1,8 +1,8 @@
 <script setup>
 import {inject, onMounted, ref} from "vue";
-
+// 全局函数
 const api = inject("$api")
-
+// 数据列表：角色信息
 const basicRoleList = ref({
   pageNumber: null,
   pageSize: null,
@@ -10,16 +10,18 @@ const basicRoleList = ref({
   totalPage: null,
   totalRow: null
 })
+// 标识：当前页码
 const currentPage = ref(1)
-
+// 函数：翻页
 const changePage = () => {
   api.getRoleListByPage(currentPage.value)
       .then(r => {
         basicRoleList.value = r.data.data
       })
 }
-
+// 初始化
 onMounted(() => {
+  // 获取角色信息数据列表第一页
   api.getRoleListByPage(1)
       .then(r => {
         basicRoleList.value = r.data.data
@@ -28,7 +30,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>权限信息配置</h1>
+  <h1>角色信息配置</h1>
   <div style="padding: 10px 0px 10px">
     <el-tag>检索/操作</el-tag>
   </div>

@@ -36,4 +36,17 @@ api.setRoleByRolId = dto => {
 api.removeRoleByRoleId = value => {
     return http.delete("/admin/role/removeRole/" + value)
 }
+// 系统级管理模块-部门系统管理
+api.getDeptListByPage = value => {
+    return http.get("/admin/department/getDeptList/" + value)
+}
+api.addDept = dto => {
+    return http.post("/admin/department/addDept", dto)
+}
+api.setDeptByCode = dto => {
+    return http.put("/admin/department/setDept", dto)
+}
+api.removeDeptByDeptCode = value => {
+    return http.delete("/admin/department/removeDept/" + value)
+}
 export default api
