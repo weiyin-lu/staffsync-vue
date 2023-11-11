@@ -32,20 +32,20 @@ api.getPermissionListByPage = value => {
 api.addPermission = dto => {
     return http.post("/admins/permissions/addPermission", dto)
 }
-// 系统级管理模块-角色系统管理
+// 系统配置管理模块-角色信息配置
 api.getRoleListByPage = value => {
     return http.get("/admins/roles/getRoleList/" + value)
 }
 api.addRole = dto => {
     return http.post("/admins/roles/addRole", dto)
 }
-api.setRoleByRolId = dto => {
-    return http.put("/admins/roles/updateRole", dto)
+api.setRoleByRoleId = dto => {
+    return http.put("/admins/roles/setRole", dto)
 }
 api.removeRoleByRoleId = value => {
     return http.delete("/admins/roles/removeRole/" + value)
 }
-// 系统级管理模块-部门系统管理
+// 系统配置管理模块-部门信息配置
 api.getDeptListByPage = value => {
     return http.get("/admins/departments/getDeptList/" + value)
 }
@@ -68,10 +68,13 @@ api.addRole = dto => {
 api.removeMenuByMenuId = value => {
     return http.delete("/admins/menus/removeMenu/" + value)
 }
-api.setRoleByRoleId = dto => {
+api.setMenuByRoleId = dto => {
     return http.put("/admins/menus/setMenu", dto)
 }
 // 系统配置管理模块-角色权限关系配置
+api.getPermissionListByRoleId = value => {
+    return http.get("/admins/relevances/permission/getPermissionList/" + value)
+}
 api.addPermissionForRole = dto => {
     return http.post("/admins/relevances/permission/addPermissionForRole", dto)
 }
@@ -79,6 +82,9 @@ api.removePermissionForRole = dto => {
     return http.put("/admins/relevances/permission/removePermissionForRole", dto)
 }
 // 系统配置管理模块-角色菜单关系配置
+api.getMenuListByRoleId = value => {
+    return http.get("/admins/relevances/permission/getPermissionList/" + value)
+}
 api.addMenuForRole = dto => {
     return http.post("/admins/relevances/menu/addMenuForRole", dto)
 }

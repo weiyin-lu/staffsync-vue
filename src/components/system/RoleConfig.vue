@@ -1,6 +1,7 @@
 <script setup>
 import {inject, onMounted, ref} from "vue";
 import {Delete, Edit} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
 // 全局函数
 const api = inject("$api")
 // 数据列表：角色信息
@@ -11,8 +12,48 @@ const basicRoleList = ref({
   totalPage: null,
   totalRow: null
 })
+// 请求数据：修改角色信息
+const roleEditData = ref({
+  roleId: null,
+  roleName: null
+})
+// 请求数据：添加角色信息
+const roleAddData = ref({
+  roleId: null,
+  roleName: null
+})
 // 标识：当前页码
 const currentPage = ref(1)
+// 标识：修改对话框显示
+const editDialogVisible = ref(false)
+// 标识：添加对话框显示
+const addDialogVisible = ref(false)
+// 标识：配置权限组对话框显示
+const permissionDialogVisible = ref(false)
+// 标识：配置菜单对话框显示
+const menuDialogVisible = ref(false)
+// 函数：修改角色信息 数据装填
+const setRoleBefore = value => {
+  editDialogVisible.value = true
+  roleEditData.value.roleId = value.roleId
+  roleEditData.value.roleName = value.roleName
+}
+// 函数：修改角色信息
+const setRole = () => {
+  api.setRoleByRoleId(roleEditData.value)
+      .then(r => {
+        if (r) {
+          ElMessage.success(r.data.msg)
+          // 关闭菜单、清空请求数据、重新获取当前列表
+          editDialogVisible.value = false
+          Object.keys(roleEditData.value).forEach((i) => roleEditData.value[i] = null)
+          api.getRoleListByPage(currentPage.value)
+              .then(r => {
+                basicRoleList.value = r.data.data
+              })
+        }
+      })
+}
 // 函数：翻页
 const changePage = () => {
   api.getRoleListByPage(currentPage.value)
@@ -32,6 +73,7 @@ onMounted(() => {
 
 <template>
   <h1>角色信息配置</h1>
+  <!--  检索/操作区域-->
   <div style="padding: 10px 0px 10px">
     <el-tag>检索/操作</el-tag>
   </div>
@@ -45,6 +87,7 @@ onMounted(() => {
       <el-button type="success" plain>添加权限</el-button>
     </el-col>
   </el-row>
+  <!--  数据列表区域-->
   <div style="padding: 10px 0px 10px">
     <el-tag>数据列表</el-tag>
   </div>
@@ -53,12 +96,19 @@ onMounted(() => {
     <el-table-column prop="roleId" label="角色编码"/>
     <el-table-column prop="roleName" label="角色含义"/>
     <el-table-column label="操作">
-      <template #default>
+      <template #default="scope">
         <el-button type="primary" plain>配置权限组</el-button>
         <el-button type="primary" plain>配置菜单</el-button>
         <el-popover placement="left">
+          <template #reference>
+            <el-button plain circle>
+              <el-icon color="#222222">
+                <More/>
+              </el-icon>
+            </el-button>
+          </template>
           <el-text>操作：</el-text>
-          <el-button type="warning" plain circle>
+          <el-button type="warning" plain circle @click="setRoleBefore(scope.row)">
             <el-icon color="#222222">
               <Edit/>
             </el-icon>
@@ -68,21 +118,34 @@ onMounted(() => {
               <Delete/>
             </el-icon>
           </el-button>
-          <template #reference>
-            <el-button plain circle>
-              <el-icon color="#222222">
-                <More/>
-              </el-icon>
-            </el-button>
-          </template>
         </el-popover>
       </template>
     </el-table-column>
   </el-table>
+  <!--  分页区-->
   <el-pagination background layout="total, ->, prev, pager, next" @current-change="changePage()"
                  :total="basicRoleList.totalRow"
                  v-model:current-page="currentPage"
                  :page-count="basicRoleList.totalPage"/>
+  <!--  修改对话框-->
+  <el-dialog v-model="editDialogVisible" width="300px">
+    <template #title>
+      <h1>修改角色信息</h1>
+    </template>
+    <el-row>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-input style="width: 200px" size="large" placeholder="角色id" v-model="roleEditData.roleId"
+                  disabled/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 20px">
+        <el-input style="width: 200px" size="large" placeholder="角色含义（名称）"
+                  v-model="roleEditData.roleName"/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-button type="success" size="large" plain @click="setRole()">提交修改</el-button>
+      </el-col>
+    </el-row>
+  </el-dialog>
 </template>
 
 <style scoped>
