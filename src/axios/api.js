@@ -68,7 +68,7 @@ api.addMenu = dto => {
 api.removeMenuByMenuId = value => {
     return http.delete("/admins/menus/removeMenu/" + value)
 }
-api.setMenuByRoleId = dto => {
+api.setMenuByMenuId = dto => {
     return http.put("/admins/menus/setMenu", dto)
 }
 // 系统配置管理模块-角色权限关系配置

@@ -145,7 +145,7 @@ onMounted(() => {
     </el-table-column>
   </el-table>
   <!--  分页区-->
-  <el-pagination background layout="total, ->, prev, pager, next" @current-change="changePage()"
+  <el-pagination background layout="total, ->, prev, pager, next" @current-change="getNowPage()"
                  :total="basicRoleList.totalRow"
                  v-model:current-page="currentPage"
                  :page-count="basicRoleList.totalPage"/>
@@ -174,14 +174,14 @@ onMounted(() => {
     </template>
     <el-row>
       <el-col style="text-align: center;padding-bottom: 5px">
-        <el-input style="width: 200px" size="large" placeholder="角色id" v-model="roleAddData.roleId"/>
+        <el-input style="width: 200px" size="large" placeholder="角色ID" v-model="roleAddData.roleId"/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 20px">
         <el-input style="width: 200px" size="large" placeholder="角色含义（名称）"
                   v-model="roleAddData.roleName"/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 5px">
-        <el-button type="success" size="large" plain @click="addRole()">提交修改</el-button>
+        <el-button type="success" size="large" plain @click="addRole()">添加</el-button>
       </el-col>
     </el-row>
   </el-dialog>
