@@ -62,8 +62,8 @@ api.removeDeptByDeptCode = value => {
 api.getMenuListByPage = value => {
     return http.get("/admins/menus/getMenuList/" + value)
 }
-api.addRole = dto => {
-    return http.post("/admins/menus/addRole", dto)
+api.addMenu = dto => {
+    return http.post("/admins/menus/addMenu", dto)
 }
 api.removeMenuByMenuId = value => {
     return http.delete("/admins/menus/removeMenu/" + value)

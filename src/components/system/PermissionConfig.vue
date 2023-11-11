@@ -42,7 +42,7 @@ onMounted(() => {
       <el-button type="primary" plain>查询</el-button>
     </el-col>
     <el-col :span="4">
-      <el-button type="success" plain>添加角色</el-button>
+      <el-button type="success" plain>添加权限</el-button>
     </el-col>
   </el-row>
   <div style="padding: 10px 0px 10px">

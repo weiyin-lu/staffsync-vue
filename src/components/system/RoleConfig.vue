@@ -38,6 +38,17 @@ const setRoleBefore = value => {
   roleEditData.value.roleId = value.roleId
   roleEditData.value.roleName = value.roleName
 }
+// 函数：添加角色
+const addRole = () => {
+  api.addRole(roleAddData.value)
+      .then(r => {
+        if (r) {
+          ElMessage.success(r.data.msg)
+          addDialogVisible.value = false
+          getNowPage()
+        }
+      })
+}
 // 函数：修改角色信息
 const setRole = () => {
   api.setRoleByRoleId(roleEditData.value)
@@ -47,15 +58,22 @@ const setRole = () => {
           // 关闭菜单、清空请求数据、重新获取当前列表
           editDialogVisible.value = false
           Object.keys(roleEditData.value).forEach((i) => roleEditData.value[i] = null)
-          api.getRoleListByPage(currentPage.value)
-              .then(r => {
-                basicRoleList.value = r.data.data
-              })
+          getNowPage()
         }
       })
 }
-// 函数：翻页
-const changePage = () => {
+// 函数：删除角色信息
+const removeRole = (value) => {
+  api.removeRoleByRoleId(value)
+      .then(r => {
+        if (r) {
+          ElMessage.success(r.data.msg)
+          getNowPage()
+        }
+      })
+}
+// 函数：获取当前页的数据
+const getNowPage = () => {
   api.getRoleListByPage(currentPage.value)
       .then(r => {
         basicRoleList.value = r.data.data
@@ -84,7 +102,7 @@ onMounted(() => {
       <el-button type="primary" plain>查询</el-button>
     </el-col>
     <el-col :span="4">
-      <el-button type="success" plain>添加权限</el-button>
+      <el-button type="success" plain @click="addDialogVisible=true">添加角色</el-button>
     </el-col>
   </el-row>
   <!--  数据列表区域-->
@@ -113,11 +131,15 @@ onMounted(() => {
               <Edit/>
             </el-icon>
           </el-button>
-          <el-button type="danger" plain circle>
-            <el-icon color="#222222">
-              <Delete/>
-            </el-icon>
-          </el-button>
+          <el-popconfirm title="确定删除？" @confirm="removeRole(scope.row.roleId)" hide-after="100">
+            <template #reference>
+              <el-button type="danger" plain circle>
+                <el-icon color="#222222">
+                  <Delete/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-popconfirm>
         </el-popover>
       </template>
     </el-table-column>
@@ -134,8 +156,7 @@ onMounted(() => {
     </template>
     <el-row>
       <el-col style="text-align: center;padding-bottom: 5px">
-        <el-input style="width: 200px" size="large" placeholder="角色id" v-model="roleEditData.roleId"
-                  disabled/>
+        <el-input style="width: 200px" size="large" v-model="roleEditData.roleId" disabled/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 20px">
         <el-input style="width: 200px" size="large" placeholder="角色含义（名称）"
@@ -143,6 +164,24 @@ onMounted(() => {
       </el-col>
       <el-col style="text-align: center;padding-bottom: 5px">
         <el-button type="success" size="large" plain @click="setRole()">提交修改</el-button>
+      </el-col>
+    </el-row>
+  </el-dialog>
+  <!--  添加对话框-->
+  <el-dialog v-model="addDialogVisible" width="300px">
+    <template #title>
+      <h1>添加角色</h1>
+    </template>
+    <el-row>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-input style="width: 200px" size="large" placeholder="角色id" v-model="roleAddData.roleId"/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 20px">
+        <el-input style="width: 200px" size="large" placeholder="角色含义（名称）"
+                  v-model="roleAddData.roleName"/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-button type="success" size="large" plain @click="addRole()">提交修改</el-button>
       </el-col>
     </el-row>
   </el-dialog>
