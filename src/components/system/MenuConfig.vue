@@ -52,13 +52,23 @@ const setMenu = () => {
         }
       })
 }
-// 函数：添加菜单
+// 函数：添加菜单信息
 const addMenu = () => {
   api.addMenu(menuAddData.value)
       .then(r => {
         if (r) {
           ElMessage.success(r.data.msg)
           addDialogVisible.value = false
+          getNowPage()
+        }
+      })
+}
+// 函数：删除菜单信息
+const removeMenu = (value) => {
+  api.removeMenuByMenuId(value)
+      .then(r => {
+        if (r) {
+          ElMessage.success(r.data.msg)
           getNowPage()
         }
       })
@@ -112,11 +122,15 @@ onMounted(() => {
             <Edit/>
           </el-icon>
         </el-button>
-        <el-button type="danger" plain circle>
-          <el-icon color="#222222">
-            <Delete/>
-          </el-icon>
-        </el-button>
+        <el-popconfirm title="确定删除？" @confirm="removeMenu(scope.row.menuId)" hide-after="100">
+          <template #reference>
+            <el-button type="danger" plain circle>
+              <el-icon color="#222222">
+                <Delete/>
+              </el-icon>
+            </el-button>
+          </template>
+        </el-popconfirm>
       </template>
     </el-table-column>
   </el-table>
@@ -151,14 +165,14 @@ onMounted(() => {
       </el-col>
     </el-row>
   </el-dialog>
-  <!--  修改对话框-->
+  <!--  添加对话框-->
   <el-dialog v-model="addDialogVisible" width="500px">
     <template #title>
       <h1>配置新菜单</h1>
     </template>
     <el-row>
       <el-col style="text-align: center;padding-bottom: 5px">
-        <el-input style="width: 300px" size="large" placeholder="菜单ID" v-model="menuAddData.menuId" />
+        <el-input style="width: 300px" size="large" placeholder="菜单ID" v-model="menuAddData.menuId"/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 5px">
         <el-input style="width: 300px" size="large" placeholder="访问路径"
