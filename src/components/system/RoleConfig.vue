@@ -109,7 +109,7 @@ onMounted(() => {
   <div style="padding: 10px 0px 10px">
     <el-tag>数据列表</el-tag>
   </div>
-  <el-table :data="basicRoleList.records" stripe height="500">
+  <el-table :data="basicRoleList.records" stripe height="550">
     <el-table-column type="index" label="序号" width="100"/>
     <el-table-column prop="roleId" label="角色编码"/>
     <el-table-column prop="roleName" label="角色含义"/>

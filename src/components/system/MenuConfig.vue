@@ -47,7 +47,7 @@ onMounted(() => {
   <div style="padding: 10px 0px 10px">
     <el-tag>数据列表</el-tag>
   </div>
-  <el-table :data="basicMenuList.records" stripe height="500">
+  <el-table :data="basicMenuList.records" stripe height="550">
     <el-table-column type="index" label="序号" width="100"/>
     <el-table-column prop="menuId" label="菜单编码"/>
     <el-table-column prop="description" label="菜单描述"/>

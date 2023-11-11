@@ -58,7 +58,7 @@ onMounted(() => {
   <div style="padding: 10px 0px 10px">
     <el-tag>数据列表</el-tag>
   </div>
-  <el-table :data="basicDeptList.records" stripe height="500">
+  <el-table :data="basicDeptList.records" stripe height="550">
     <el-table-column type="index" label="序号" width="100"/>
     <el-table-column prop="deptCode" label="部门编码"/>
     <el-table-column prop="deptName" label="部门名称"/>
