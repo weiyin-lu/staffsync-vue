@@ -17,7 +17,7 @@ api.isLogin = () => {
     return http.get("/authorizes/informations/isLogin")
 }
 api.getRoleListByUserId = value => {
-    return http.get("/authorizes/informations/getroleList" + value)
+    return http.get("/authorizes/informations/getroleList/" + value)
 }
 api.getPermissionListByUserId = value => {
     return http.get("/authorizes/informations/getPermissionList/" + value)

@@ -29,6 +29,8 @@ const login = () => {
           loading.close()
           ElMessage.success(r.data.msg)
           router.push("/index")
+        } else {
+          loading.close()
         }
       })
 }
