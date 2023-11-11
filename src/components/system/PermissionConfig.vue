@@ -1,8 +1,8 @@
 <script setup>
 import {inject, onMounted, ref} from "vue";
+import {ElMessage} from "element-plus";
 // 全局函数
 const api = inject("$api")
-
 // 数据列表：权限信息
 const basicPermissionList = ref({
   pageNumber: null,
@@ -11,10 +11,28 @@ const basicPermissionList = ref({
   totalPage: null,
   totalRow: null
 })
+// 请求数据：添加权限信息
+const permissionEditData = ref({
+  permissionId: null,
+  permissionName: null
+})
 // 标识：当前页码
 const currentPage = ref(1)
-// 函数：翻页
-const changePage = () => {
+// 标识：添加对话框显示
+const addDialogVisible = ref(false)
+// 函数：添加权限
+const addPermission = () => {
+  api.addPermission(permissionEditData.value)
+      .then(r => {
+        if (r) {
+          ElMessage.success(r.data.msg)
+          addDialogVisible.value = false
+          getNowPage()
+        }
+      })
+}
+// 函数：获取当前页的数据
+const getNowPage = () => {
   api.getPermissionListByPage(currentPage.value)
       .then(r => {
         basicPermissionList.value = r.data.data
@@ -32,6 +50,7 @@ onMounted(() => {
 
 <template>
   <h1>权限信息配置</h1>
+  <!--  操作区-->
   <div style="padding: 10px 0px 10px">
     <el-tag>检索/操作</el-tag>
   </div>
@@ -42,9 +61,10 @@ onMounted(() => {
       <el-button type="primary" plain>查询</el-button>
     </el-col>
     <el-col :span="4">
-      <el-button type="success" plain>添加权限</el-button>
+      <el-button type="success" plain @click="addDialogVisible=true">添加权限</el-button>
     </el-col>
   </el-row>
+  <!--  数据展示区-->
   <div style="padding: 10px 0px 10px">
     <el-tag>数据列表</el-tag>
   </div>
@@ -53,10 +73,30 @@ onMounted(() => {
     <el-table-column prop="permissionId" label="权限编码"/>
     <el-table-column prop="permissionName" label="权限含义"/>
   </el-table>
-  <el-pagination background layout="total, ->, prev, pager, next" @current-change="changePage()"
+  <!--  分页区-->
+  <el-pagination background layout="total, ->, prev, pager, next" @current-change="getNowPage()"
                  :total="basicPermissionList.totalRow"
                  v-model:current-page="currentPage"
                  :page-count="basicPermissionList.totalPage"/>
+  <!--  添加对话框-->
+  <el-dialog v-model="addDialogVisible" width="300px">
+    <template #title>
+      <h1>添加权限</h1>
+    </template>
+    <el-row>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-input style="width: 200px" size="large" placeholder="权限ID"
+                  v-model="permissionEditData.permissionId"/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 20px">
+        <el-input style="width: 200px" size="large" placeholder="权限含义"
+                  v-model="permissionEditData.permissionName"/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-button type="success" size="large" plain @click="addPermission()">添加</el-button>
+      </el-col>
+    </el-row>
+  </el-dialog>
 </template>
 
 <style scoped>

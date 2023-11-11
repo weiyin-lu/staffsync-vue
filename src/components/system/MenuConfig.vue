@@ -25,6 +25,8 @@ const menuAddData = ref({
   componentPath: null,
   description: null
 })
+// 标识：当前页码
+const currentPage = ref(1)
 // 标识：修改对话框显示
 const editDialogVisible = ref(false)
 // 标识：添加对话框显示
@@ -61,8 +63,6 @@ const addMenu = () => {
         }
       })
 }
-// 标识：当前页码
-const currentPage = ref(1)
 // 函数：获取当前页的数据
 const getNowPage = () => {
   api.getMenuListByPage(currentPage.value)
