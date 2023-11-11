@@ -16,6 +16,15 @@ api.register = dto => {
 api.isLogin = () => {
     return http.get("/authorizes/informations/isLogin")
 }
+api.getRoleListByUserId = value => {
+    return http.get("/authorizes/informations/getroleList" + value)
+}
+api.getPermissionListByUserId = value => {
+    return http.get("/authorizes/informations/getPermissionList/" + value)
+}
+api.getMenuListByUserId = value => {
+    return http.get("/authorizes/informations/getMenuList/" + value)
+}
 // 系统级管理模块-权限系统管理
 api.getPermissionListByPage = value => {
     return http.get("/admins/permissions/getPermissionList/" + value)
