@@ -131,7 +131,8 @@ onMounted(() => {
               <Edit/>
             </el-icon>
           </el-button>
-          <el-popconfirm title="确定删除？" @confirm="removeRole(scope.row.roleId)" hide-after="100">
+          <el-popconfirm title="删除角色可能会导致持有该角色的用户失去权限，确定删除？" @confirm="removeRole(scope.row.roleId)"
+                         hide-after="100">
             <template #reference>
               <el-button type="danger" plain circle>
                 <el-icon color="#222222">

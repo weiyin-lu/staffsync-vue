@@ -91,4 +91,8 @@ api.addMenuForRole = dto => {
 api.removePermissionForRole = dto => {
     return http.put("/admins/relevances/menu/removeMenuForRole", dto)
 }
+// 人员信息管理
+api.getDeptListForTree = (value) =>{
+    return http.get("/department/getDeptList/" + value)
+}
 export default api

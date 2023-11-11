@@ -122,7 +122,8 @@ onMounted(() => {
             <Edit/>
           </el-icon>
         </el-button>
-        <el-popconfirm title="确定删除？" @confirm="removeMenu(scope.row.menuId)" hide-after="100">
+        <el-popconfirm title="删除菜单可能会导致所有用户都无法访问该菜单，确定删除？" @confirm="removeMenu(scope.row.menuId)"
+                       hide-after="100">
           <template #reference>
             <el-button type="danger" plain circle>
               <el-icon color="#222222">

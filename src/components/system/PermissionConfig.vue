@@ -79,17 +79,17 @@ onMounted(() => {
                  v-model:current-page="currentPage"
                  :page-count="basicPermissionList.totalPage"/>
   <!--  添加对话框-->
-  <el-dialog v-model="addDialogVisible" width="300px">
+  <el-dialog v-model="addDialogVisible" width="500px">
     <template #title>
       <h1>添加权限</h1>
     </template>
     <el-row>
       <el-col style="text-align: center;padding-bottom: 5px">
-        <el-input style="width: 200px" size="large" placeholder="权限ID"
+        <el-input style="width: 300px" size="large" placeholder="权限ID"
                   v-model="permissionEditData.permissionId"/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 20px">
-        <el-input style="width: 200px" size="large" placeholder="权限含义"
+        <el-input style="width: 300px" size="large" placeholder="权限含义"
                   v-model="permissionEditData.permissionName"/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 5px">
