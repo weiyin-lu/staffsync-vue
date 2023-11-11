@@ -53,16 +53,6 @@ const getNowPage = () => {
         basicDeptList.value = r.data.data
       })
 }
-// 函数：上级部门字段格式化
-const deptNameFormat = (row, column, cellValue) => {
-  let format = "无";
-  for (const obj of basicDeptList.value.records) {
-    if (obj.deptCode == cellValue) {
-      format = obj.deptName
-    }
-  }
-  return format
-}
 // 初始化
 onMounted(() => {
   // 获得部门信息数据列表第一页
@@ -102,7 +92,7 @@ onMounted(() => {
     <el-table-column type="index" label="序号" width="100"/>
     <el-table-column prop="deptCode" label="部门编码"/>
     <el-table-column prop="deptName" label="部门名称"/>
-    <el-table-column prop="superior" label="上级部门" :formatter="deptNameFormat"/>
+    <el-table-column prop="superior" label="上级部门"/>
     <el-table-column label="操作">
       <template #default>
         <el-button type="warning" plain circle>
@@ -139,7 +129,7 @@ onMounted(() => {
       </el-col>
       <el-col style="text-align: center;padding-bottom: 20px">
         <el-text>上级部门：</el-text>
-        <el-cascader v-model="deptAddData.superior" :options="treeDeptList" :props="cascaderConfig"
+        <el-cascader v-model="cascaderPath" :options="treeDeptList" :props="cascaderConfig"
                      clearable/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 5px">
