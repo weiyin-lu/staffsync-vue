@@ -49,4 +49,31 @@ api.setDeptByCode = dto => {
 api.removeDeptByDeptCode = value => {
     return http.delete("/admins/departments/removeDept/" + value)
 }
+// 系统配置管理模块-菜单信息配置
+api.getMenuListByPage = value => {
+    return http.get("/admins/menus/getMenuList/" + value)
+}
+api.addRole = dto => {
+    return http.post("/admins/menus/addRole", dto)
+}
+api.removeMenuByMenuId = value => {
+    return http.delete("/admins/menus/removeMenu/" + value)
+}
+api.setRoleByRoleId = dto => {
+    return http.put("/admins/menus/setMenu", dto)
+}
+// 系统配置管理模块-角色权限关系配置
+api.addPermissionForRole = dto => {
+    return http.post("/admins/relevances/permission/addPermissionForRole", dto)
+}
+api.removePermissionForRole = dto => {
+    return http.put("/admins/relevances/permission/removePermissionForRole", dto)
+}
+// 系统配置管理模块-角色菜单关系配置
+api.addMenuForRole = dto => {
+    return http.post("/admins/relevances/menu/addMenuForRole", dto)
+}
+api.removePermissionForRole = dto => {
+    return http.put("/admins/relevances/menu/removeMenuForRole", dto)
+}
 export default api

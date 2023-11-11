@@ -38,9 +38,10 @@ const logout = () => {
             <template #title>
               <span>系统配置管理</span>
             </template>
-            <el-menu-item index="system-deptConfig">部门信息配置</el-menu-item>
             <el-menu-item index="system-roleConfig">角色信息配置</el-menu-item>
+            <el-menu-item index="system-menuConfig">菜单信息配置</el-menu-item>
             <el-menu-item index="system-permissionConfig">权限信息配置</el-menu-item>
+            <el-menu-item index="system-deptConfig">部门信息配置</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-aside>

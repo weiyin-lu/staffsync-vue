@@ -1,5 +1,6 @@
 <script setup>
 import {inject, onMounted, ref} from "vue";
+import {Delete, Edit} from "@element-plus/icons-vue";
 // 全局函数
 const api = inject("$api")
 // 数据列表：角色信息
@@ -53,9 +54,28 @@ onMounted(() => {
     <el-table-column prop="roleName" label="角色含义"/>
     <el-table-column label="操作">
       <template #default>
-        <el-button plain>修改</el-button>
-        <el-button type="danger" plain>删除</el-button>
         <el-button type="primary" plain>配置权限组</el-button>
+        <el-button type="primary" plain>配置菜单</el-button>
+        <el-popover placement="left">
+          <el-text>操作：</el-text>
+          <el-button type="warning" plain circle>
+            <el-icon color="#222222">
+              <Edit/>
+            </el-icon>
+          </el-button>
+          <el-button type="danger" plain circle>
+            <el-icon color="#222222">
+              <Delete/>
+            </el-icon>
+          </el-button>
+          <template #reference>
+            <el-button plain circle>
+              <el-icon color="#222222">
+                <More/>
+              </el-icon>
+            </el-button>
+          </template>
+        </el-popover>
       </template>
     </el-table-column>
   </el-table>

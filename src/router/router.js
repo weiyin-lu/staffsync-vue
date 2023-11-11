@@ -40,6 +40,10 @@ const routes = [
                 path: 'system-permissionConfig',
                 component: () => import('/src/components/system/PermissionConfig.vue')
             },
+            {
+                path: 'system-menuConfig',
+                component: () => import('/src/components/system/MenuConfig.vue')
+            },
         ]
     },
 ]

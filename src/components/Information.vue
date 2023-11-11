@@ -2,7 +2,7 @@
 import {useStore} from "vuex";
 // 全局函数
 const store = useStore()
-// 函数：空值过滤和石化
+// 函数：空值过滤格式化
 const notNullFormat = value => {
   if (value == null || value == "") {
     return "无"
@@ -24,6 +24,11 @@ const notNullFormat = value => {
     <el-descriptions-item label="联系方式">{{ notNullFormat(store.state.info.email) }}</el-descriptions-item>
     <el-descriptions-item label="部门">{{ notNullFormat(store.state.info.department) }}</el-descriptions-item>
     <el-descriptions-item label="岗位">{{ notNullFormat(store.state.info.post) }}</el-descriptions-item>
+    <el-descriptions-item label="角色">
+      <div>
+        <el-tag v-for="item in store.state.role">{{ item }}</el-tag>
+      </div>
+    </el-descriptions-item>
   </el-descriptions>
 </template>
 
