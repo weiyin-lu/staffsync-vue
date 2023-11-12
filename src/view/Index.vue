@@ -46,7 +46,9 @@ onMounted(() => {
             menuVisible.value.system = true
           }
           // 常规处理：把菜单id对应的菜单权限显示出来
-          menuVisible.value[menu.menuId] = true;
+          let index = menu.menuId.indexOf("-") + 1
+          let flag = menu.menuId.substring(index)
+          menuVisible.value[flag] = true;
         }
       })
 })

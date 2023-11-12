@@ -122,7 +122,8 @@ onMounted(() => {
             <Edit/>
           </el-icon>
         </el-button>
-        <el-popconfirm title="删除菜单可能会导致所有用户都无法访问该菜单，确定删除？" @confirm="removeMenu(scope.row.menuId)"
+        <el-popconfirm title="删除菜单可能会导致所有用户都无法访问该菜单，确定删除？"
+                       @confirm="removeMenu(scope.row.menuId)"
                        hide-after="100">
           <template #reference>
             <el-button type="danger" plain circle>
@@ -171,6 +172,7 @@ onMounted(() => {
     <template #title>
       <h1>配置新菜单</h1>
     </template>
+    <el-text type="danger">菜单ID必须以"menu-component"的形式命名</el-text>
     <el-row>
       <el-col style="text-align: center;padding-bottom: 5px">
         <el-input style="width: 300px" size="large" placeholder="菜单ID" v-model="menuAddData.menuId"/>
