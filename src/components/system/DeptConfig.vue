@@ -3,7 +3,6 @@ import {inject, onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 // 全局函数
 const api = inject("$api")
-
 // 数据列表：部门信息
 const basicDeptList = ref({
   pageNumber: null,
@@ -14,8 +13,14 @@ const basicDeptList = ref({
 })
 // 数据列表：部门信息（树形嵌套列表）
 const treeDeptList = ref([])
-// 请求数据：部门信息
+// 请求数据：添加部门信息
 const deptAddData = ref({
+  deptCode: null,
+  deptName: null,
+  superior: null
+})
+// 请求数据：修改部门信息
+const deptEditData = ref({
   deptCode: null,
   deptName: null,
   superior: null
@@ -31,6 +36,8 @@ const cascaderConfig = ref({
 })
 // 标识：添加对话框显示
 const addDialogVisible = ref(false)
+// 标识：修改对话框显示
+const EditDialogVisible = ref(false)
 // 标识：当前页码
 const currentPage = ref(1)
 // 函数：添加部门
@@ -38,10 +45,41 @@ const addDept = () => {
   // 将级联选择器选择的最末级路径装填到请求数据中
   deptAddData.value.superior = cascaderPath.value[cascaderPath.value.length - 1]
   api.addDept(deptAddData.value)
-      .then(r=>{
-        if(r) {
-          ElMessage.success(r.data.msg)
+      .then(r => {
+        if (r) {
           addDialogVisible.value = false
+          Object.keys(deptAddData.value).forEach((i) => deptAddData.value[i] = null)
+          ElMessage.success(r.data.msg)
+          getNowPage()
+        }
+      })
+}
+// 函数：删除部门
+const removeDept = value => {
+  api.removeDeptByDeptCode(value)
+      .then(r => {
+        if (r) {
+          ElMessage.success(r.data.msg)
+          getNowPage()
+        }
+      })
+}
+// 函数：修改部门 数据装填
+const setDeptBefore = (value) => {
+  EditDialogVisible.value = true
+  deptEditData.value.deptCode = value.deptCode
+  deptEditData.value.deptName = value.deptName
+}
+// 函数：修改部门
+const setDept = () => {
+  // 将级联选择器选择的最末级路径装填到请求数据中
+  deptEditData.value.superior = cascaderPath.value[cascaderPath.value.length - 1]
+  api.setDeptByCode(deptEditData.value)
+      .then(r => {
+        if (r) {
+          addDialogVisible.value = false
+          Object.keys(deptEditData.value).forEach((i) => deptEditData.value[i] = null)
+          ElMessage.success(r.data.msg)
           getNowPage()
         }
       })
@@ -92,19 +130,25 @@ onMounted(() => {
     <el-table-column type="index" label="序号" width="100"/>
     <el-table-column prop="deptCode" label="部门编码"/>
     <el-table-column prop="deptName" label="部门名称"/>
-    <el-table-column prop="superior" label="上级部门"/>
+    <el-table-column prop="superiorName" label="上级部门"/>
     <el-table-column label="操作">
-      <template #default>
-        <el-button type="warning" plain circle>
+      <template #default="scope">
+        <el-button type="warning" plain circle @click="setDeptBefore(scope.row)">
           <el-icon color="#222222">
             <Edit/>
           </el-icon>
         </el-button>
-        <el-button type="danger" plain circle>
-          <el-icon color="#222222">
-            <Delete/>
-          </el-icon>
-        </el-button>
+        <el-popconfirm title="删除部门可能会导致员工失去部门信息，确定删除？"
+                       @confirm="removeDept(scope.row.deptCode)"
+                       hide-after="100">
+          <template #reference>
+            <el-button type="danger" plain circle>
+              <el-icon color="#222222">
+                <Delete/>
+              </el-icon>
+            </el-button>
+          </template>
+        </el-popconfirm>
       </template>
     </el-table-column>
   </el-table>
@@ -131,6 +175,30 @@ onMounted(() => {
         <el-text>上级部门：</el-text>
         <el-cascader v-model="cascaderPath" :options="treeDeptList" :props="cascaderConfig"
                      clearable/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-button type="success" size="large" plain @click="addDept()">添加</el-button>
+      </el-col>
+    </el-row>
+  </el-dialog>
+  <!--  修改对话框-->
+  <el-dialog v-model="EditDialogVisible" width="500px">
+    <template #title>
+      <h1>修改部门信息</h1>
+    </template>
+    <el-row>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-input style="width: 300px" size="large" placeholder="部门编码"
+                  v-model="deptEditData.deptCode" disabled/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 5px">
+        <el-input style="width: 300px" size="large" placeholder="部门名称"
+                  v-model="deptEditData.deptName"/>
+      </el-col>
+      <el-col style="text-align: center;padding-bottom: 20px">
+        <el-text>上级部门：</el-text>
+        <el-cascader v-model="cascaderPath" :options="treeDeptList" :props="cascaderConfig"
+                     :placeholder="deptEditData.superior" clearable/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 5px">
         <el-button type="success" size="large" plain @click="addDept()">添加</el-button>

@@ -47,7 +47,6 @@ const setMenu = () => {
           ElMessage.success(r.data.msg)
           // 关闭菜单、清空请求数据、重新获取当前列表
           editDialogVisible.value = false
-          Object.keys(menuEditData.value).forEach((i) => menuEditData.value[i] = null)
           getNowPage()
         }
       })
@@ -59,6 +58,7 @@ const addMenu = () => {
         if (r) {
           ElMessage.success(r.data.msg)
           addDialogVisible.value = false
+          Object.keys(menuAddData.value).forEach((i) => menuAddData.value[i] = null)
           getNowPage()
         }
       })
