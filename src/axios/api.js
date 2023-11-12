@@ -75,6 +75,9 @@ api.setMenuByMenuId = dto => {
 api.getPermissionListByRoleId = value => {
     return http.get("/admins/relevances/permission/getPermissionList/" + value)
 }
+api.getPermissionListAll = () => {
+    return http.get("/admins/relevances/permission/getPermissionList")
+}
 api.addPermissionForRole = dto => {
     return http.post("/admins/relevances/permission/addPermissionForRole", dto)
 }
@@ -88,7 +91,7 @@ api.getMenuListByRoleId = value => {
 api.addMenuForRole = dto => {
     return http.post("/admins/relevances/menu/addMenuForRole", dto)
 }
-api.removePermissionForRole = dto => {
+api.removeMenuForRole = dto => {
     return http.put("/admins/relevances/menu/removeMenuForRole", dto)
 }
 // 人员信息管理

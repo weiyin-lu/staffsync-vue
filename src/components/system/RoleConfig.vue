@@ -12,6 +12,14 @@ const basicRoleList = ref({
   totalPage: null,
   totalRow: null
 })
+// 数据列表：所有权限信息
+const basicPermissionList = ref([])
+// 数据列表：所有菜单信息
+const basicMenuList = ref([])
+// 数据列表：某角色当前拥有的权限
+const permissionRelevanceList = ref([])
+// 数据列表：某角色当前拥有的菜单
+const menuRelevanceList = ref([])
 // 请求数据：修改角色信息
 const roleEditData = ref({
   roleId: null,
@@ -22,6 +30,11 @@ const roleAddData = ref({
   roleId: null,
   roleName: null
 })
+// 请求数据：配置角色权限/菜单权限关系
+const relevanceData = ref({
+  roleId: null,
+  list: []
+})
 // 标识：当前页码
 const currentPage = ref(1)
 // 标识：修改对话框显示
@@ -29,25 +42,66 @@ const editDialogVisible = ref(false)
 // 标识：添加对话框显示
 const addDialogVisible = ref(false)
 // 标识：配置权限组对话框显示
-const permissionDialogVisible = ref(false)
+const permissionRelevanceDialogVisible = ref(false)
 // 标识：配置菜单对话框显示
-const menuDialogVisible = ref(false)
+const menuRelevanceDialogVisible = ref(false)
+// 函数：配置权限组 数据装填
+const permissionRelevanceEditBefore = value => {
+  permissionRelevanceDialogVisible.value = true
+  relevanceData.value.roleId = value;
+  api.getPermissionListByRoleId(value)
+      .then(r => {
+        if (r) {
+          permissionRelevanceList.value = r.data.data
+        }
+      })
+  api.getPermissionListAll()
+      .then((r => {
+        if (r) {
+          basicPermissionList.value = r.data.data
+        }
+      }))
+}
+// 函数：配置权限组-添加权限
+const addPermissionRelevance = () => {
+  api.addPermissionForRole(relevanceData.value)
+      .then(r => {
+        if (r) {
+          api.getPermissionListByRoleId(relevanceData.value.roleId)
+              .then(r => {
+                if (r) {
+                  permissionRelevanceList.value = r.data.data
+                }
+              })
+          relevanceData.value.list = []
+          ElMessage.success("添加成功")
+        }
+      })
+}
+// 函数：配置权限组-移除权限
+const removePermissionRelevance = (dto) => {
+  api.removePermissionForRole(dto)
+      .then(r => {
+        if (r) {
+          api.getPermissionListByRoleId(relevanceData.value.roleId)
+              .then(r => {
+                if (r) {
+                  permissionRelevanceList.value = r.data.data
+                }
+              })
+          ElMessage.success("移除成功")
+        }
+      })
+}
+// 函数：配置菜单 数据装填
+const menuRelevanceEditBefore = value => {
+  menuRelevanceDialogVisible.value = true
+}
 // 函数：修改角色信息 数据装填
 const setRoleBefore = value => {
   editDialogVisible.value = true
   roleEditData.value.roleId = value.roleId
   roleEditData.value.roleName = value.roleName
-}
-// 函数：添加角色
-const addRole = () => {
-  api.addRole(roleAddData.value)
-      .then(r => {
-        if (r) {
-          ElMessage.success(r.data.msg)
-          addDialogVisible.value = false
-          getNowPage()
-        }
-      })
 }
 // 函数：修改角色信息
 const setRole = () => {
@@ -58,6 +112,17 @@ const setRole = () => {
           // 关闭菜单、清空请求数据、重新获取当前列表
           editDialogVisible.value = false
           Object.keys(roleEditData.value).forEach((i) => roleEditData.value[i] = null)
+          getNowPage()
+        }
+      })
+}
+// 函数：添加角色
+const addRole = () => {
+  api.addRole(roleAddData.value)
+      .then(r => {
+        if (r) {
+          ElMessage.success(r.data.msg)
+          addDialogVisible.value = false
           getNowPage()
         }
       })
@@ -115,8 +180,10 @@ onMounted(() => {
     <el-table-column prop="roleName" label="角色含义"/>
     <el-table-column label="操作">
       <template #default="scope">
-        <el-button type="primary" plain>配置权限组</el-button>
-        <el-button type="primary" plain>配置菜单</el-button>
+        <el-button type="primary" plain @click="permissionRelevanceEditBefore(scope.row.roleId)">配置权限组
+        </el-button>
+        <el-button type="primary" plain @click="menuRelevanceEditBefore(scope.row.roleId)">配置菜单
+        </el-button>
         <el-popover placement="left">
           <template #reference>
             <el-button plain circle>
@@ -131,7 +198,8 @@ onMounted(() => {
               <Edit/>
             </el-icon>
           </el-button>
-          <el-popconfirm title="删除角色可能会导致持有该角色的用户失去权限，确定删除？" @confirm="removeRole(scope.row.roleId)"
+          <el-popconfirm title="删除角色可能会导致持有该角色的用户失去权限，确定删除？"
+                         @confirm="removeRole(scope.row.roleId)"
                          hide-after="100">
             <template #reference>
               <el-button type="danger" plain circle>
@@ -185,6 +253,52 @@ onMounted(() => {
         <el-button type="success" size="large" plain @click="addRole()">添加</el-button>
       </el-col>
     </el-row>
+  </el-dialog>
+  <!--  权限配置对话框-->
+  <el-dialog v-model="permissionRelevanceDialogVisible">
+    <template #title>
+      <h1>权限清单</h1>
+    </template>
+    <el-collapse>
+      <el-collapse-item>
+        <template #title>
+          <el-text type="primary">点击展开添加选项</el-text>
+        </template>
+        <el-select v-model="relevanceData.list" clearable multiple filterable style="width: 500px">
+          <el-option v-for="item in basicPermissionList" :key="item.permissionId"
+                     :label="item.permissionId" :value="item.permissionId">
+            <el-text style="float: left">{{ item.permissionName }}</el-text>
+            <el-text type="info" style="float: right">{{ item.permissionId }}</el-text>
+          </el-option>
+        </el-select>
+        <el-button type="success" plain @click="addPermissionRelevance()">添加</el-button>
+      </el-collapse-item>
+    </el-collapse>
+    <el-table :data="permissionRelevanceList" height="400">
+      <el-table-column label="权限ID" prop="permissionId"/>
+      <el-table-column label="权限含义" prop="permissionName"/>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-popconfirm title="移除权限后持有该角色的用户将一同失去权限，确定移除？"
+                         @confirm="removePermissionRelevance(scope.row)"
+                         hide-after="100">
+            <template #reference>
+              <el-button type="danger" plain circle>
+                <el-icon color="#222222">
+                  <Delete/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
+    </el-table>
+  </el-dialog>
+  <!--  菜单配置对话框-->
+  <el-dialog v-model="menuRelevanceDialogVisible">
+    <template #title>
+      <h1>菜单清单</h1>
+    </template>
   </el-dialog>
 </template>
 
