@@ -133,18 +133,14 @@ onMounted(() => {
   <div style="padding: 10px 0px 10px">
     <el-tag>检索/操作</el-tag>
   </div>
-  <el-row gutter="10">
-    <el-col :span="20">
-      <el-input style="width: 300px" placeholder="部门编码..." v-model="searchData.deptCode"
-                @input="searchDeptList()"/>
-      <el-input style="width: 300px" placeholder="部门名称..." v-model="searchData.deptName"
-                @input="searchDeptList()"/>
-      <el-button type="primary" plain @click="searchDeptList">查询</el-button>
-    </el-col>
-    <el-col :span="4">
-      <el-button type="success" plain @click="addDialogVisible=true">添加部门</el-button>
-    </el-col>
-  </el-row>
+  <el-space>
+    <el-input style="width: 300px" placeholder="部门编码..." v-model="searchData.deptCode"
+              @input="searchDeptList()"/>
+    <el-input style="width: 300px" placeholder="部门名称..." v-model="searchData.deptName"
+              @input="searchDeptList()"/>
+    <el-button type="primary" plain @click="searchDeptList">查询</el-button>
+    <el-button type="success" plain @click="addDialogVisible=true">添加部门</el-button>
+  </el-space>
   <!--  数据展示区-->
   <div style="padding: 10px 0px 10px">
     <el-tag>数据列表</el-tag>
