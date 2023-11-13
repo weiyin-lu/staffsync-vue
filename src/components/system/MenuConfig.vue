@@ -25,12 +25,23 @@ const menuAddData = ref({
   componentPath: null,
   description: null
 })
+const searchData = ref({
+  menuId: null,
+  page: 1
+})
 // 标识：当前页码
 const currentPage = ref(1)
 // 标识：修改对话框显示
 const editDialogVisible = ref(false)
 // 标识：添加对话框显示
 const addDialogVisible = ref(false)
+const searchMenuList = () => {
+  searchData.value.page = currentPage.value
+  api.getMenuListByCondition(searchData.value)
+      .then(r => {
+        basicMenuList.value = r.data.data
+      })
+}
 // 函数：修改菜单信息 数据装填
 const setMenuBefore = value => {
   editDialogVisible.value = true
@@ -75,11 +86,18 @@ const removeMenu = (value) => {
 }
 // 函数：获取当前页的数据
 const getNowPage = () => {
-  api.getMenuListByPage(currentPage.value)
-      .then(r => {
-        basicMenuList.value = r.data.data
-      })
+
+  // 如果查询输入框有值，就通过模糊匹配函数获取数据；如果没有，就通过正常函数查询
+  if (searchData.value.menuId == null || searchData.value.MenuId == "") {
+    api.getMenuListByPage(currentPage.value)
+        .then(r => {
+          basicMenuList.value = r.data.data
+        })
+  } else {
+    searchMenuList()
+  }
 }
+
 // 初始化
 onMounted(() => {
   // 获得部门信息数据列表第一页
@@ -97,8 +115,9 @@ onMounted(() => {
     <el-tag>检索/操作</el-tag>
   </div>
   <el-space>
-    <el-input style="width: 300px" placeholder="菜单编码..."/>
-    <el-button type="primary" plain>查询</el-button>
+    <el-input style="width: 300px" v-model="searchData.menuId" @input="searchMenuList()"
+              placeholder="菜单编码..."/>
+    <el-button type="primary" plain @click="searchMenuList()">查询</el-button>
     <el-button type="success" plain @click="addDialogVisible=true">配置新菜单</el-button>
   </el-space>
   <!--  数据显示区-->

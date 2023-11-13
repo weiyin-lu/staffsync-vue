@@ -51,7 +51,6 @@ const searchDeptList = () => {
   searchData.value.page = currentPage.value
   api.getDeptListByCondition(searchData.value)
       .then(r => {
-        console.log(basicDeptList.value)
         basicDeptList.value = r.data.data
       })
 }
@@ -220,7 +219,7 @@ onMounted(() => {
                      :placeholder="deptEditData.superior" clearable/>
       </el-col>
       <el-col style="text-align: center;padding-bottom: 5px">
-        <el-button type="success" size="large" plain @click="addDept()">添加</el-button>
+        <el-button type="success" size="large" plain @click="setDept()">添加</el-button>
       </el-col>
     </el-row>
   </el-dialog>
