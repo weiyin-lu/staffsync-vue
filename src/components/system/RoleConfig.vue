@@ -23,7 +23,8 @@ const menuRelevanceList = ref([])
 // 请求数据：查询角色信息
 const searchData = ref({
   roleId: null,
-  roleName: null
+  roleName: null,
+  page: 1
 })
 // 请求数据：修改角色信息
 const roleEditData = ref({
@@ -195,10 +196,16 @@ const removeRole = (value) => {
 }
 // 函数：获取当前页的数据
 const getNowPage = () => {
-  api.getRoleListByPage(currentPage.value)
-      .then(r => {
-        basicRoleList.value = r.data.data
-      })
+  // 如果查询输入框有值，就通过模糊匹配函数获取数据；如果没有，就通过正常函数查询
+  if ((searchData.value.roleId == null || searchData.value.roleId == "") && (searchData.value.roleName ==
+      null || searchData.value.roleName == "")) {
+    api.getRoleListByPage(currentPage.value)
+        .then(r => {
+          basicRoleList.value = r.data.data
+        })
+  } else {
+    searchRoleList()
+  }
 }
 // 初始化
 onMounted(() => {

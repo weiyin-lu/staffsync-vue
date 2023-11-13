@@ -57,6 +57,7 @@ const searchDeptList = () => {
 }
 // 函数：获取当前页的数据
 const getNowPage = () => {
+  // 如果查询输入框有值，就通过模糊匹配函数获取数据；如果没有，就通过正常函数查询
   if ((searchData.value.deptCode == null || searchData.value.deptCode == "") && (searchData.value.deptName ==
       null || searchData.value.deptName == "")) {
     api.getDeptListByPage(currentPage.value)
