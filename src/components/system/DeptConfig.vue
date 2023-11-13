@@ -13,6 +13,12 @@ const basicDeptList = ref({
 })
 // 数据列表：部门信息（树形嵌套列表）
 const treeDeptList = ref([])
+// 请求数据：查询部门信息
+const searchData = ref({
+  deptCode: null,
+  deptName: null,
+  page: 1
+})
 // 请求数据：添加部门信息
 const deptAddData = ref({
   deptCode: null,
@@ -40,6 +46,27 @@ const addDialogVisible = ref(false)
 const EditDialogVisible = ref(false)
 // 标识：当前页码
 const currentPage = ref(1)
+// 函数：数据模糊匹配查询部门
+const searchDeptList = () => {
+  searchData.value.page = currentPage.value
+  api.getDeptListByCondition(searchData.value)
+      .then(r => {
+        console.log(basicDeptList.value)
+        basicDeptList.value = r.data.data
+      })
+}
+// 函数：获取当前页的数据
+const getNowPage = () => {
+  if ((searchData.value.deptCode == null || searchData.value.deptCode == "") && (searchData.value.deptName ==
+      null || searchData.value.deptName == "")) {
+    api.getDeptListByPage(currentPage.value)
+        .then(r => {
+          basicDeptList.value = r.data.data
+        })
+  } else {
+    searchDeptList()
+  }
+}
 // 函数：添加部门
 const addDept = () => {
   // 将级联选择器选择的最末级路径装填到请求数据中
@@ -84,13 +111,6 @@ const setDept = () => {
         }
       })
 }
-// 函数：获取当前页的数据
-const getNowPage = () => {
-  api.getDeptListByPage(currentPage.value)
-      .then(r => {
-        basicDeptList.value = r.data.data
-      })
-}
 // 初始化
 onMounted(() => {
   // 获得部门信息数据列表第一页
@@ -114,9 +134,11 @@ onMounted(() => {
   </div>
   <el-row gutter="10">
     <el-col :span="20">
-      <el-input style="width: 300px" placeholder="部门编码..."/>
-      <el-input style="width: 300px" placeholder="部门名称..."/>
-      <el-button type="primary" plain>查询</el-button>
+      <el-input style="width: 300px" placeholder="部门编码..." v-model="searchData.deptCode"
+                @input="searchDeptList()"/>
+      <el-input style="width: 300px" placeholder="部门名称..." v-model="searchData.deptName"
+                @input="searchDeptList()"/>
+      <el-button type="primary" plain @click="searchDeptList">查询</el-button>
     </el-col>
     <el-col :span="4">
       <el-button type="success" plain @click="addDialogVisible=true">添加部门</el-button>

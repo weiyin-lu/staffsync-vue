@@ -50,11 +50,10 @@ const addDialogVisible = ref(false)
 const permissionRelevanceDialogVisible = ref(false)
 // 标识：配置菜单对话框显示
 const menuRelevanceDialogVisible = ref(false)
-// 函数：数据模糊匹配查询
+// 函数：数据模糊匹配查询角色
 const searchRoleList = () => {
   api.getRoleListByCondition(searchData.value)
       .then(r => {
-        console.log(basicRoleList.value)
         basicRoleList.value = r.data.data
       })
 }

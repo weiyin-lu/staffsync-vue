@@ -52,6 +52,9 @@ api.removeRoleByRoleId = value => {
 api.getDeptListByPage = value => {
     return http.get("/admins/departments/getDeptList/" + value)
 }
+api.getDeptListByCondition = dto => {
+    return http.post("/admins/departments/getDeptList", dto)
+}
 api.addDept = dto => {
     return http.post("/admins/departments/addDept", dto)
 }
