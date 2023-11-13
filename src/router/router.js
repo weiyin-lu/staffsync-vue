@@ -31,7 +31,6 @@ const routes = [
                     if (r) {
                         next()
                     } else {
-                        ElMessage.warning("请登陆后再操作")
                         next("/")
                     }
                 })

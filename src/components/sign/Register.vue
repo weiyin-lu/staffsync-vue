@@ -23,14 +23,29 @@ const register = () => {
 </script>
 
 <template>
-  <h2>注册</h2>
-  <div>
-    <el-input v-model="regData.username" placeholder="输入账号"/>
-    <el-input v-model="regData.password" type="password" placeholder="输入密码"/>
-    <el-button @click="register()" size="large" plain>注册</el-button>
-  </div>
+  <el-row>
+    <el-col style="text-align: center;padding-bottom: 20px">
+      <el-input style="width: 400px" v-model="regData.username" size="large" placeholder="输入账号"/>
+    </el-col>
+    <el-col style="text-align: center;padding-bottom: 20px">
+      <el-input style="width: 400px" v-model="regData.password" type="password" size="large"
+                placeholder="输入密码"/>
+    </el-col>
+    <el-col style="text-align: center;padding-bottom: 20px">
+      <el-button style="text-align: center" @click="register()" type="primary" size="large" plain>注册
+      </el-button>
+    </el-col>
+  </el-row>
 </template>
 
 <style scoped>
-
+.el-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto 0;
+  height: 21px;
+}
 </style>

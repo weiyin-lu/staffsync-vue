@@ -37,14 +37,28 @@ const login = () => {
 </script>
 
 <template>
-  <h2>登录</h2>
-  <div>
-    <el-input v-model="loginData.username" placeholder="输入账号"/>
-    <el-input v-model="loginData.password" type="password" placeholder="输入密码"/>
-    <el-button @click="login()" size="large" plain>登录</el-button>
-  </div>
+  <el-row>
+    <el-col style="text-align: center;padding-bottom: 20px">
+      <el-input style="width: 400px" v-model="loginData.username" size="large" placeholder="输入账号"/>
+    </el-col>
+    <el-col style="text-align: center;padding-bottom: 20px">
+      <el-input style="width: 400px" v-model="loginData.password" type="password" size="large"
+                placeholder="输入密码"/>
+    </el-col>
+    <el-col style="text-align: center;padding-bottom: 20px">
+      <el-button style="text-align: center" @click="login()" type="primary" size="large" plain>登录
+      </el-button>
+    </el-col>
+  </el-row>
 </template>
-
 <style scoped>
-
+.el-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto 0;
+  height: 21px;
+}
 </style>
