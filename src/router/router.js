@@ -1,4 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
+import api from "../axios/api.js";
+import {ElMessage} from "element-plus";
 
 const routes = [
     {
@@ -23,6 +25,17 @@ const routes = [
         path: '/index',
         component: () => import('/src/view/Index.vue'),
         redirect: '/index/default',
+        beforeEnter: (to, from, next) => {
+            api.isLogin()
+                .then(r => {
+                    if (r) {
+                        next()
+                    } else {
+                        ElMessage.warning("请登陆后再操作")
+                        next("/")
+                    }
+                })
+        },
         children: [
             {
                 path: 'default',

@@ -79,20 +79,23 @@ api.getPermissionListAll = () => {
     return http.get("/admins/relevances/permission/getPermissionList")
 }
 api.addPermissionForRole = dto => {
-    return http.post("/admins/relevances/permission/addPermissionForRole", dto)
+    return http.post("/admins/relevances/permission/addPermission", dto)
 }
 api.removePermissionForRole = dto => {
-    return http.put("/admins/relevances/permission/removePermissionForRole", dto)
+    return http.put("/admins/relevances/permission/removePermission", dto)
 }
 // 系统配置管理模块-角色菜单关系配置
 api.getMenuListByRoleId = value => {
-    return http.get("/admins/relevances/permission/getPermissionList/" + value)
+    return http.get("/admins/relevances/menu/getMenuList/" + value)
+}
+api.getMenuListAll = () => {
+    return http.get("/admins/relevances/menu/getMenuList")
 }
 api.addMenuForRole = dto => {
-    return http.post("/admins/relevances/menu/addMenuForRole", dto)
+    return http.post("/admins/relevances/menu/addMenu", dto)
 }
 api.removeMenuForRole = dto => {
-    return http.put("/admins/relevances/menu/removeMenuForRole", dto)
+    return http.put("/admins/relevances/menu/removeMenu", dto)
 }
 // 人员信息管理
 api.getDeptListForTree = (value) =>{

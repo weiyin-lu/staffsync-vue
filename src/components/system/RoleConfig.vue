@@ -30,7 +30,7 @@ const roleAddData = ref({
   roleId: null,
   roleName: null
 })
-// 请求数据：配置角色权限/菜单权限关系
+// 请求数据：配置角色和权限/菜单关系
 const relevanceData = ref({
   roleId: null,
   list: []
@@ -96,6 +96,50 @@ const removePermissionRelevance = (dto) => {
 // 函数：配置菜单 数据装填
 const menuRelevanceEditBefore = value => {
   menuRelevanceDialogVisible.value = true
+  relevanceData.value.roleId = value;
+  api.getMenuListByRoleId(value)
+      .then(r => {
+        if (r) {
+          menuRelevanceList.value = r.data.data
+        }
+      })
+  api.getMenuListAll()
+      .then((r => {
+        if (r) {
+          basicMenuList.value = r.data.data
+        }
+      }))
+}
+// 函数: 配置菜单 添加菜单
+const addMenuRelevance = () => {
+  api.addMenuForRole(relevanceData.value)
+      .then(r => {
+        if (r) {
+          api.getMenuListByRoleId(relevanceData.value.roleId)
+              .then(r => {
+                if (r) {
+                  permissionRelevanceList.value = r.data.data
+                }
+              })
+          relevanceData.value.list = []
+          ElMessage.success("添加成功")
+        }
+      })
+}
+// 函数：配置菜单 移除菜单
+const removeMenuRelevance = (dto) => {
+  api.removeMenuForRole(dto)
+      .then(r => {
+        if (r) {
+          api.getMenuListByRoleId(relevanceData.value.roleId)
+              .then(r => {
+                if (r) {
+                  permissionRelevanceList.value = r.data.data
+                }
+              })
+          ElMessage.success("移除成功")
+        }
+      })
 }
 // 函数：修改角色信息 数据装填
 const setRoleBefore = value => {
@@ -254,6 +298,47 @@ onMounted(() => {
       </el-col>
     </el-row>
   </el-dialog>
+  <!--  菜单配置对话框-->
+  <el-dialog v-model="menuRelevanceDialogVisible">
+    <template #title>
+      <h1>菜单清单</h1>
+    </template>
+    <el-collapse>
+      <el-collapse-item>
+        <template #title>
+          <el-text type="primary">点击展开添加选项</el-text>
+        </template>
+        <el-select v-model="relevanceData.list" clearable multiple filterable style="width: 500px">
+          <el-option v-for="item in basicMenuList" :key="item.menuId"
+                     :label="item.menuId" :value="item.menuId">
+            <el-text style="float: left">{{ item.description }}</el-text>
+            <el-text type="info" style="float: right">{{ item.menuId }}</el-text>
+          </el-option>
+        </el-select>
+        <el-button type="success" plain @click="addMenuRelevance()">添加</el-button>
+      </el-collapse-item>
+    </el-collapse>
+    <el-table :data="menuRelevanceList" height="400">
+      <el-table-column label="菜单ID" prop="menuId"/>
+      <el-table-column label="菜单路径" prop="url"/>
+      <el-table-column label="菜单描述" prop="description"/>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-popconfirm title="移除菜单后持有该角色的用户将不能操作该菜单，确定移除？"
+                         @confirm="removeMenuRelevance(scope.row)"
+                         hide-after="100">
+            <template #reference>
+              <el-button type="danger" plain circle>
+                <el-icon color="#222222">
+                  <Delete/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
+    </el-table>
+  </el-dialog>
   <!--  权限配置对话框-->
   <el-dialog v-model="permissionRelevanceDialogVisible">
     <template #title>
@@ -293,12 +378,6 @@ onMounted(() => {
         </template>
       </el-table-column>
     </el-table>
-  </el-dialog>
-  <!--  菜单配置对话框-->
-  <el-dialog v-model="menuRelevanceDialogVisible">
-    <template #title>
-      <h1>菜单清单</h1>
-    </template>
   </el-dialog>
 </template>
 
