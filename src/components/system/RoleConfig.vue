@@ -20,6 +20,11 @@ const basicMenuList = ref([])
 const permissionRelevanceList = ref([])
 // 数据列表：某角色当前拥有的菜单
 const menuRelevanceList = ref([])
+// 请求数据：查询角色信息
+const searchData = ref({
+  roleId: null,
+  roleName: null
+})
 // 请求数据：修改角色信息
 const roleEditData = ref({
   roleId: null,
@@ -45,6 +50,14 @@ const addDialogVisible = ref(false)
 const permissionRelevanceDialogVisible = ref(false)
 // 标识：配置菜单对话框显示
 const menuRelevanceDialogVisible = ref(false)
+// 函数：数据模糊匹配查询
+const searchRoleList = () => {
+  api.getRoleListByCondition(searchData.value)
+      .then(r => {
+        console.log(basicRoleList.value)
+        basicRoleList.value = r.data.data
+      })
+}
 // 函数：配置权限组 数据装填
 const permissionRelevanceEditBefore = value => {
   permissionRelevanceDialogVisible.value = true
@@ -206,9 +219,11 @@ onMounted(() => {
   </div>
   <el-row gutter="10">
     <el-col :span="20">
-      <el-input style="width: 300px" placeholder="角色编码..."/>
-      <el-input style="width: 300px" placeholder="角色名称..."/>
-      <el-button type="primary" plain>查询</el-button>
+      <el-input style="width: 300px" placeholder="角色编码..." v-model="searchData.roleId"
+                @input="searchRoleList()"/>
+      <el-input style="width: 300px" placeholder="角色含义..." v-model="searchData.roleName"
+                @input="searchRoleList()"/>
+      <el-button type="primary" plain @click="searchRoleList()">查询</el-button>
     </el-col>
     <el-col :span="4">
       <el-button type="success" plain @click="addDialogVisible=true">添加角色</el-button>

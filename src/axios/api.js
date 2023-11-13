@@ -25,7 +25,7 @@ api.getPermissionListByUserId = value => {
 api.getMenuListByUserId = value => {
     return http.get("/authorizes/informations/getMenuList/" + value)
 }
-// 系统级管理模块-权限系统管理
+// 系统级管理模块-权限信息配置
 api.getPermissionListByPage = value => {
     return http.get("/admins/permissions/getPermissionList/" + value)
 }
@@ -35,6 +35,9 @@ api.addPermission = dto => {
 // 系统配置管理模块-角色信息配置
 api.getRoleListByPage = value => {
     return http.get("/admins/roles/getRoleList/" + value)
+}
+api.getRoleListByCondition = dto => {
+    return http.post("/admins/roles/getRoleList", dto)
 }
 api.addRole = dto => {
     return http.post("/admins/roles/addRole", dto)
@@ -97,8 +100,8 @@ api.addMenuForRole = dto => {
 api.removeMenuForRole = dto => {
     return http.put("/admins/relevances/menu/removeMenu", dto)
 }
-// 人员信息管理
-api.getDeptListForTree = (value) =>{
+// 人员管理模块-部门管理
+api.getDeptListForTree = (value) => {
     return http.get("/department/getDeptList/" + value)
 }
 export default api
