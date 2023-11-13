@@ -32,6 +32,9 @@ api.getPermissionListByPage = value => {
 api.addPermission = dto => {
     return http.post("/admins/permissions/addPermission", dto)
 }
+api.getPermissionListByCondition = dto => {
+    return http.post("/admins/permissions/getPermissionList", dto)
+}
 // 系统配置管理模块-角色信息配置
 api.getRoleListByPage = value => {
     return http.get("/admins/roles/getRoleList/" + value)

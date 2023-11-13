@@ -197,8 +197,8 @@ const removeRole = (value) => {
 // 函数：获取当前页的数据
 const getNowPage = () => {
   // 如果查询输入框有值，就通过模糊匹配函数获取数据；如果没有，就通过正常函数查询
-  if ((searchData.value.roleId == null || searchData.value.roleId == "") && (searchData.value.roleName ==
-      null || searchData.value.roleName == "")) {
+  if ((searchData.value.roleId == null || searchData.value.roleId == "") &&
+      (searchData.value.roleName == null || searchData.value.roleName == "")) {
     api.getRoleListByPage(currentPage.value)
         .then(r => {
           basicRoleList.value = r.data.data

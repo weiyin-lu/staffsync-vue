@@ -16,10 +16,22 @@ const permissionEditData = ref({
   permissionId: null,
   permissionName: null
 })
+// 请求数据：查询权限信息
+const searchData = ref({
+  permissionId: null,
+  permissionName: null,
+  page: 1
+})
 // 标识：当前页码
 const currentPage = ref(1)
 // 标识：添加对话框显示
 const addDialogVisible = ref(false)
+const searchPermissionList = () => {
+  api.getPermissionListByCondition(searchData.value)
+      .then(r => {
+        basicPermissionList.value = r.data.data
+      })
+}
 // 函数：添加权限
 const addPermission = () => {
   api.addPermission(permissionEditData.value)
@@ -33,10 +45,16 @@ const addPermission = () => {
 }
 // 函数：获取当前页的数据
 const getNowPage = () => {
-  api.getPermissionListByPage(currentPage.value)
-      .then(r => {
-        basicPermissionList.value = r.data.data
-      })
+  // 如果查询输入框有值，就通过模糊匹配函数获取数据；如果没有，就通过正常函数查询
+  if ((searchData.value.permissionId == null || searchData.value.permissionId == "") &&
+      (searchData.value.permissionName == null || searchData.value.permissionName == "")) {
+    api.getPermissionListByPage(currentPage.value)
+        .then(r => {
+          basicPermissionList.value = r.data.data
+        })
+  } else {
+    searchPermissionList()
+  }
 }
 // 初始化
 onMounted(() => {
@@ -56,9 +74,11 @@ onMounted(() => {
   </div>
   <el-row gutter="10">
     <el-col :span="20">
-      <el-input style="width: 300px" placeholder="权限标签..."/>
-      <el-input style="width: 300px" placeholder="权限名称..."/>
-      <el-button type="primary" plain>查询</el-button>
+      <el-input style="width: 300px" placeholder="权限标签..." v-model="searchData.permissionId"
+                @input="searchPermissionList()"/>
+      <el-input style="width: 300px" placeholder="权限名称..." v-model="searchData.permissionName"
+                @input="searchPermissionList()"/>
+      <el-button type="primary" plain @click="searchPermissionList()">查询</el-button>
     </el-col>
     <el-col :span="4">
       <el-button type="success" plain @click="addDialogVisible=true">添加权限</el-button>
