@@ -25,6 +25,7 @@ const menuAddData = ref({
   componentPath: null,
   description: null
 })
+// 请求数据：查询菜单信息
 const searchData = ref({
   menuId: null,
   page: 1
@@ -50,7 +51,7 @@ const setMenuBefore = value => {
   menuEditData.value.componentPath = value.componentPath
   menuEditData.value.description = value.description
 }
-// 函数：修改角色信息
+// 函数：修改菜单信息
 const setMenu = () => {
   api.setMenuByMenuId(menuEditData.value)
       .then(r => {
@@ -86,7 +87,6 @@ const removeMenu = (value) => {
 }
 // 函数：获取当前页的数据
 const getNowPage = () => {
-
   // 如果查询输入框有值，就通过模糊匹配函数获取数据；如果没有，就通过正常函数查询
   if (searchData.value.menuId == null || searchData.value.MenuId == "") {
     api.getMenuListByPage(currentPage.value)

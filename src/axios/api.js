@@ -110,7 +110,11 @@ api.removeMenuForRole = dto => {
     return http.put("/admins/relevances/menu/removeMenu", dto)
 }
 // 人员管理模块-部门管理
-api.getDeptListForTree = (value) => {
+api.getDeptListForTree = value => {
     return http.get("/department/getDeptList/" + value)
+}
+// 人员管理模块-个人信息维护
+api.setInfoByUserId = dto => {
+    return http.put("/infomation/setInfo", dto)
 }
 export default api

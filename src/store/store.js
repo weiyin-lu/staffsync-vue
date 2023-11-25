@@ -27,31 +27,37 @@ const store = createStore({
         }
     },
     mutations: {
-        login(state,dto) {
+        login(state, dto) {
             // 将当前赋值给store一次
             state.token = dto.token
             state.role = dto.role
             state.permission = dto.permission
             state.info = dto.info
             // 将这些值赋值给sessionstorage
-            session.set('token',dto.token)
-            session.set('role',dto.role)
-            session.set('permission',dto.permission)
-            session.set('info',dto.info)
+            session.set('token', dto.token)
+            session.set('role', dto.role)
+            session.set('permission', dto.permission)
+            session.set('info', dto.info)
         },
         logout() {
             session.clear('token')
             session.clear('role')
             session.clear('permission')
             session.clear('info')
+        },
+        setInfo(state, dto) {
+            state.info = dto
         }
     },
     actions: {
-        loginAction(context,dto) {
-            context.commit('login',dto)
+        loginAction(context, dto) {
+            context.commit('login', dto)
         },
         logoutAction(context) {
             context.commit('logout')
+        },
+        setInfoAction(context, dto) {
+            context.commit('setInfo', dto)
         }
     }
 })
